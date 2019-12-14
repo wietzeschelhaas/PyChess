@@ -1,7 +1,7 @@
 import piece
 class Knight(piece.Piece):
-    def __init__(self,img,x,y,isWhite):
-        super().__init__(img,x,y,isWhite)
+    def __init__(self,img,x,y,isWhite,n):
+        super().__init__(img,x,y,isWhite,n)
 
     
     def draw(self,win):

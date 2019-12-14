@@ -1,7 +1,7 @@
 import piece
 class Queen(piece.Piece):
-    def __init__(self,img,x,y,isWhite):
-        super().__init__(img,x,y,isWhite)
+    def __init__(self,img,x,y,isWhite,n):
+        super().__init__(img,x,y,isWhite,n)
 
     
     def draw(self,win):
@@ -15,6 +15,7 @@ class Queen(piece.Piece):
             if board[self.prevXCor + counter][self.prevYCor] == 0:
                 res.append((self.prevXCor + counter,self.prevYCor))
             else:
+                res.append((self.prevXCor + counter,self.prevYCor))
                 break
             counter = counter + 1
 
@@ -23,6 +24,7 @@ class Queen(piece.Piece):
             if board[self.prevXCor - counter][self.prevYCor] == 0:
                 res.append((self.prevXCor - counter,self.prevYCor))
             else:
+                res.append((self.prevXCor - counter,self.prevYCor))
                 break
             counter = counter + 1
         
@@ -31,6 +33,7 @@ class Queen(piece.Piece):
             if board[self.prevXCor][self.prevYCor + counter] == 0:
                 res.append((self.prevXCor,self.prevYCor+counter))
             else:
+                res.append((self.prevXCor,self.prevYCor+counter))
                 break
             counter = counter + 1
 
@@ -39,6 +42,7 @@ class Queen(piece.Piece):
             if board[self.prevXCor][self.prevYCor - counter] == 0:
                 res.append((self.prevXCor,self.prevYCor-counter))
             else:
+                res.append((self.prevXCor,self.prevYCor-counter))
                 break
             counter = counter + 1
         
@@ -49,6 +53,7 @@ class Queen(piece.Piece):
             if board[self.prevXCor - counter][self.prevYCor - counter] == 0:
                 res.append((self.prevXCor - counter,self.prevYCor-counter))
             else:
+                res.append((self.prevXCor - counter,self.prevYCor-counter))
                 break
             counter = counter + 1
 
@@ -59,6 +64,7 @@ class Queen(piece.Piece):
             if board[self.prevXCor - counter][self.prevYCor + counter] == 0:
                 res.append((self.prevXCor - counter,self.prevYCor+counter))
             else:
+                res.append((self.prevXCor - counter,self.prevYCor+counter))
                 break
             counter = counter + 1
 
@@ -69,6 +75,7 @@ class Queen(piece.Piece):
             if board[self.prevXCor + counter][self.prevYCor + counter] == 0:
                 res.append((self.prevXCor + counter,self.prevYCor+counter))
             else:
+                res.append((self.prevXCor + counter,self.prevYCor+counter))
                 break
             counter = counter + 1
 
@@ -79,6 +86,7 @@ class Queen(piece.Piece):
             if board[self.prevXCor + counter][self.prevYCor - counter] == 0:
                 res.append((self.prevXCor + counter,self.prevYCor-counter))
             else:
+                res.append((self.prevXCor + counter,self.prevYCor-counter))
                 break
             counter = counter + 1
         return res

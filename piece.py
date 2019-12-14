@@ -2,7 +2,7 @@ import pygame
 
 class Piece(pygame.sprite.Sprite):
 
-    def __init__(self,img,x,y,isWhite):
+    def __init__(self,img,x,y,isWhite,n):
         super().__init__()
 
         self.image = pygame.image.load(img)
@@ -12,6 +12,7 @@ class Piece(pygame.sprite.Sprite):
         self.prevYCor = y
         self.isWhite = isWhite
         self.isTouched = False
+        self.name = n
 
 
 
@@ -28,8 +29,7 @@ class Piece(pygame.sprite.Sprite):
     def moveToTile(self,xCor,yCor):
         self.rect = pygame.Rect((xCor*80,yCor*80),[80,80])
 
-    #TODO this function should calculate which tile the user wants the piece on
-    # based on coordinates
+    # this function calculate which tile the user wants the piece on based on coordinates
     def calcWhichTile(self):
        xCor = int(round(self.rect.x / 80))
        yCor = int(round(self.rect.y / 80))
