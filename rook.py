@@ -1,20 +1,24 @@
 import piece
+import rules
 class Rook(piece.Piece):
     def __init__(self,img,x,y,isWhite,n):
         super().__init__(img,x,y,isWhite,n)
 
+        self.hasMoved = False
+
     
     def draw(self,win):
         self.drawPiece(win)
+        
 
-
-    def tilesMoveable(self,board):
+    def tilesMoveable(self,playerTurn,whiteKing,rookQueenSide,rookKingSide,board):
         res = []
         
         counter = 1
         while self.prevXCor + counter < 8:
             if board[self.prevXCor + counter][self.prevYCor] == 0:
-                res.append((self.prevXCor + counter,self.prevYCor))
+                if rules.isLegalMove(playerTurn,self,whiteKing,self.prevXCor + counter,self.prevYCor,board):
+                    res.append((self.prevXCor + counter,self.prevYCor))
             else:
                 break
             counter = counter + 1
@@ -22,7 +26,8 @@ class Rook(piece.Piece):
         counter = 1
         while self.prevXCor - counter >= 0:
             if board[self.prevXCor - counter][self.prevYCor] == 0:
-                res.append((self.prevXCor - counter,self.prevYCor))
+                if rules.isLegalMove(playerTurn,self,whiteKing,self.prevXCor - counter,self.prevYCor,board):
+                    res.append((self.prevXCor - counter,self.prevYCor))
             else:
                 break
             counter = counter + 1
@@ -30,7 +35,8 @@ class Rook(piece.Piece):
         counter = 1
         while self.prevYCor + counter < 8:
             if board[self.prevXCor][self.prevYCor + counter] == 0:
-                res.append((self.prevXCor,self.prevYCor+counter))
+                if rules.isLegalMove(playerTurn,self,whiteKing,self.prevXCor,self.prevYCor+counter,board):
+                    res.append((self.prevXCor,self.prevYCor+counter))
             else:
                 break
             counter = counter + 1
@@ -38,7 +44,8 @@ class Rook(piece.Piece):
         counter = 1
         while self.prevYCor - counter >= 0:
             if board[self.prevXCor][self.prevYCor - counter] == 0:
-                res.append((self.prevXCor,self.prevYCor-counter))
+                if rules.isLegalMove(playerTurn,self,whiteKing,self.prevXCor,self.prevYCor-counter,board):
+                    res.append((self.prevXCor,self.prevYCor-counter))
             else:
                 break
             counter = counter + 1

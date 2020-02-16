@@ -16,7 +16,6 @@ pygame.display.set_caption("chess")
 board  = [[0 for x in range(8)] for y in range(8)]
 
 canCastle = True
-
 playerTurn = True
 
 
@@ -29,8 +28,11 @@ for x in range(8):
 for i in range(8):
     blackPieces.append(Pawn("BlackPawn.png",i,1,False,"p"))
 
-whitePieces.append(Rook("WhiteRook.png",0,7,True,"r"))
-whitePieces.append(Rook("WhiteRook.png",7,7,True,"r"))
+rookKingSide = Rook("WhiteRook.png",0,7,True,"r")
+whitePieces.append(rookKingSide)
+
+rookQueenSide = Rook("WhiteRook.png",7,7,True,"r")
+whitePieces.append(rookQueenSide)
 
 blackPieces.append(Rook("BlackRook.png",0,0,False,"r"))
 blackPieces.append(Rook("BlackRook.png",7,0,False,"r"))
@@ -49,7 +51,9 @@ blackPieces.append(Bish("BlackBishop.png",5,0,False,"b"))
 
 whiteKing = King("WhiteKing.png",3,7,True,"k")
 whitePieces.append(whiteKing)
-blackPieces.append(King("BlackKing.png",3,0,False,"k"))
+
+blackKing = King("BlackKing.png",3,0,False,"k")
+blackPieces.append(blackKing)
 
 whitePieces.append(Queen("WhiteQueen.png",4,7,True,"q"))
 blackPieces.append(Queen("BlackQueen.png",4,0,False,"q"))
@@ -69,7 +73,6 @@ run = True
 mouseDown = False
 toMove = None
 
-whiteIncheck = False
 blackIncheck = False
 
 
@@ -77,60 +80,57 @@ def blackRandomMove():
     playerTurn = True
 while run: #main loop
 
-    #update
-    if playerTurn:
 
+    #events
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                run = False
 
+        
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouseDown = True
+        if event.type == pygame.MOUSEBUTTONUP:
+            mouseDown = False
+            if pressedPiece:
+                x,y = toMove.calcWhichTile()
+                #This will contain all avaiable moves, taking in consideration the rules
+                res = toMove.tilesMoveable(playerTurn,whiteKing,rookQueenSide,rookKingSide,board)
+                print(res)
+                if not (x,y) in res: 
+                    #move to previous position
+                    toMove.moveToTile(toMove.prevXCor,toMove.prevYCor)
+                else:
+                    toMove.moveToTile(x,y)
+                    board[toMove.prevXCor][toMove.prevYCor] = 0
 
-        #events
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_q:
-                    run = False
+                    #update board and prevcors    
+                    board[x][y] = toMove
+                    toMove.prevXCor = x
+                    toMove.prevYCor = y
 
-            
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouseDown = True
-            if event.type == pygame.MOUSEBUTTONUP:
-                mouseDown = False
-                if pressedPiece:
-                    x,y = toMove.calcWhichTile()
-                    res = toMove.tilesMoveable(board)
-                    print(res)
-                    
-                    if not rules.isLegalMove(playerTurn,whiteIncheck,toMove,whiteKing,x,y,res,board):
-                            #move to previous position
-                        toMove.moveToTile(toMove.prevXCor,toMove.prevYCor)
-                    else:
-                        #TODO RIGHT NOW PLAYER CAN CAPTURE ITS OWN PIECES, THIS IS CLEANER IF ITS FIXED HERE INSTEAD OF IN ALL PIECE CLASSES
-                        #TODO do all below by making the  move and then check to see all stuff below
+                    if toMove == rookQueenSide:
+                        rookQueenSide.hasMoved = True
+                    if toMove == rookKingSide:
+                        rookKingSide.hasMoved = True
+                    if toMove == whiteKing:
+                        whiteKing.hasMoved = True
 
-                        # TODO check if moving the piece doesn't lead to check.
+                    #other players move
+                    playerTurn = not playerTurn
+            pressedPiece = False
 
-                        #TODO does player want to castle? make funciton that checks if casteling is still legal.
-                        #do this here or in king.py?
+    if mouseDown:
+        x, y = pygame.mouse.get_pos()
+        #TODO change this to whitePieces later
+        for p in allPieces:
+            if p.rect.collidepoint(x,y) and not pressedPiece:
+                pressedPiece = True
+                toMove = p
+    if pressedPiece: 
+        x, y = pygame.mouse.get_pos()
+        toMove.updatePos(x,y)
 
-                        toMove.moveToTile(x,y)
-                        board[toMove.prevXCor][toMove.prevYCor] = 0
-
-                        #update board and prevcors    
-                        board[x][y] = toMove
-                        toMove.prevXCor = x
-                        toMove.prevYCor = y
-                pressedPiece = False
-
-        if mouseDown:
-            x, y = pygame.mouse.get_pos()
-            #TODO change this to whitePieces later
-            for p in allPieces:
-                if p.rect.collidepoint(x,y) and not pressedPiece:
-                    pressedPiece = True
-                    toMove = p
-        if pressedPiece: 
-            x, y = pygame.mouse.get_pos()
-            toMove.updatePos(x,y)
-    else:
-        blackRandomMove()
 
 
     win.fill((0,0,0))

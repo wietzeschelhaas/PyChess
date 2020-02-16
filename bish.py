@@ -1,4 +1,5 @@
 import piece
+import rules
 class Bish(piece.Piece):
     def __init__(self,img,x,y,isWhite,n):
         super().__init__(img,x,y,isWhite,n)
@@ -8,7 +9,7 @@ class Bish(piece.Piece):
         self.drawPiece(win)
 
 
-    def tilesMoveable(self,board):
+    def tilesMoveable(self,playerTurn,whiteKing,rookQueenSide,rookKingSide,board):
         res = []
         
         #left up
@@ -16,7 +17,8 @@ class Bish(piece.Piece):
         while not self.outOfBounds(self.prevXCor - counter,self.prevYCor
                 - counter):
             if board[self.prevXCor - counter][self.prevYCor - counter] == 0:
-                res.append((self.prevXCor - counter,self.prevYCor-counter))
+                if rules.isLegalMove(playerTurn,self,whiteKing,self.prevXCor - counter,self.prevYCor-counter,board): 
+                    res.append((self.prevXCor - counter,self.prevYCor-counter))
             else:
                 break
             counter = counter + 1
@@ -26,7 +28,8 @@ class Bish(piece.Piece):
         while not self.outOfBounds(self.prevXCor - counter,self.prevYCor
                 + counter):
             if board[self.prevXCor - counter][self.prevYCor + counter] == 0:
-                res.append((self.prevXCor - counter,self.prevYCor+counter))
+                if rules.isLegalMove(playerTurn,self,whiteKing,self.prevXCor - counter,self.prevYCor+counter,board):
+                    res.append((self.prevXCor - counter,self.prevYCor+counter))
             else:
                 break
             counter = counter + 1
@@ -36,7 +39,8 @@ class Bish(piece.Piece):
         while not self.outOfBounds(self.prevXCor + counter,self.prevYCor
                 + counter):
             if board[self.prevXCor + counter][self.prevYCor + counter] == 0:
-                res.append((self.prevXCor + counter,self.prevYCor+counter))
+                if rules.isLegalMove(playerTurn,self,whiteKing,self.prevXCor + counter,self.prevYCor+counter,board):
+                    res.append((self.prevXCor + counter,self.prevYCor+counter))
             else:
                 break
             counter = counter + 1
@@ -46,7 +50,8 @@ class Bish(piece.Piece):
         while not self.outOfBounds(self.prevXCor + counter,self.prevYCor
                 - counter):
             if board[self.prevXCor + counter][self.prevYCor - counter] == 0:
-                res.append((self.prevXCor + counter,self.prevYCor-counter))
+                if rules.isLegalMove(playerTurn,self,whiteKing,self.prevXCor + counter,self.prevYCor-counter,board):
+                    res.append((self.prevXCor + counter,self.prevYCor-counter))
             else:
                 break
             counter = counter + 1

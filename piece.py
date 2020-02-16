@@ -1,5 +1,5 @@
 import pygame
-
+import rules
 class Piece(pygame.sprite.Sprite):
 
     def __init__(self,img,x,y,isWhite,n):
@@ -44,5 +44,5 @@ class Piece(pygame.sprite.Sprite):
         if y < 0 or y > 7:
             return True
         return False
-            
-    
+
+
